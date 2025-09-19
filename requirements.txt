@@ -1,16 +1,17 @@
-# базовое
+# --- базовое для приложения ---
 streamlit>=1.37
 pandas>=2.0
+numpy>=1.25
 matplotlib
-
-# работа с путями и изображениями
 Pillow>=10.0
-
-# YOLOv8 (ultralytics)
-ultralytics>=8.2
-
-# для загрузки картинок по URL
 requests>=2.31
 
-# (опционально, если используешь numpy явно в фильтрах)
-numpy>=1.25
+# --- DL/YOLO ---
+ultralytics>=8.2
+
+# CPU-версии Torch (без CUDA; подходят для Streamlit Cloud/Linux)
+torch==2.3.1
+torchvision==0.18.1
+
+# OpenCV без GUI (важно: headless!)
+opencv-python-headless==4.10.0.84
