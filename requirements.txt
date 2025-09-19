@@ -1,0 +1,16 @@
+# базовое
+streamlit>=1.37
+pandas>=2.0
+matplotlib
+
+# работа с путями и изображениями
+Pillow>=10.0
+
+# YOLOv8 (ultralytics)
+ultralytics>=8.2
+
+# для загрузки картинок по URL
+requests>=2.31
+
+# (опционально, если используешь numpy явно в фильтрах)
+numpy>=1.25
