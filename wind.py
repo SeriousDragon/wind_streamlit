@@ -275,7 +275,7 @@ with tab_detect:
         imgsz = st.number_input("imgsz", value=960, step=64, min_value=256, max_value=2048)
         iou = st.slider("NMS IoU", 0.30, 0.90, 0.65, 0.01)
         base_conf = st.slider("Базовый conf (собрать максимум кандидатов)", 0.00, 0.50, 0.05, 0.01)
-        device = st.text_input("device", value="0")
+        device_choice = st.selectbox("Device", ["auto", "cpu", "cuda:0"], index=0)
 
         st.divider()
         st.subheader("Классы для отображения")
@@ -299,6 +299,18 @@ with tab_detect:
     @st.cache_resource(show_spinner=False)
     def load_model(weights):
         return YOLO(weights)
+    
+    def resolve_device(choice: str):
+        choice = (choice or "").strip().lower()
+        if choice in ("", "auto"):
+            return 0 if torch.cuda.is_available() else "cpu"
+        if choice in ("cpu", "-1"):
+            return "cpu"
+        if choice.startswith("cuda") or choice.isdigit():
+            # если GPU не доступен — тихо уходим на CPU
+            return 0 if torch.cuda.is_available() else "cpu"
+        return "cpu"
+
 
 
     def apply_class_thresholds(result, class_conf, allowed_classes=None):
@@ -487,12 +499,13 @@ with tab_detect:
 
     def run_one(src_path: str):
         # Предикт по выбранным классам (allowed_ids может быть пустым → берём все)
+        dev = resolve_device(device_choice)
         results = model.predict(
             source=src_path,
             imgsz=int(imgsz),
             conf=float(base_conf),            # глобально низкий, потом режем своими порогами
             iou=float(iou),
-            device=device,
+            device=dev,
             classes=allowed_ids if allowed_ids else None,
             verbose=False
         )
