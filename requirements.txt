@@ -1,13 +1,13 @@
 # --- base ---
-streamlit>=1.37
-pandas>=2.0
-numpy>=1.25
-matplotlib>=3.7
-Pillow>=10.0
-requests>=2.31
+streamlit
+pandas
+numpy
+matplotlib
+Pillow
+requests
 
 # --- YOLO ---
-ultralytics>=8.2
+ultralytics
 
 # CPU Torch (для Linux/Streamlit Cloud)
 torch==2.3.1
